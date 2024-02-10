@@ -12,14 +12,39 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [selected, setSelected ] = useState(0)
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState({
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0
+  })
 
-  const handleClick = () => (setSelected(Math.floor(Math.random() * anecdotes.length)))
+
+  const handleRandom = () => (setSelected(Math.floor(Math.random() * anecdotes.length)))
+
+  const handleVote = () => {
+    const arrNum = `${selected}`
+    console.log("arrNum", arrNum)
+    setVotes(prevState => ({
+      ...prevState,
+      [arrNum]:  votes[arrNum] + 1
+    }))
+  }
+
+  console.log('votes',votes)
+  console.log('selected', selected)
 
   return (
     <>
       <div>{anecdotes[selected]}</div>
-      <button onClick={handleClick}>next anecdote</button>
+      <div>has {votes[`${selected}`]} votes </div>
+      <button onClick={handleVote}>Vote</button>
+      <button onClick={handleRandom}>next anecdote</button>
     </>
   )
 }
