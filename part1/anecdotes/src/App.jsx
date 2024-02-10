@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const App = () => {
   const anecdotes = [
@@ -11,30 +11,42 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  //create an empty arr with votes 
+  const startingVotes = Array(anecdotes.length).fill(0)
 
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState({
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-    7: 0
-  })
+  const [votes, setVotes] = useState(startingVotes
+  )
+  const [ topVotes, setTopVotes ] = useState(0)
 
+  
+  useEffect(() => {
+    const popularAnec = votes.indexOf(Math.max(...votes))
 
-  const handleRandom = () => (setSelected(Math.floor(Math.random() * anecdotes.length)))
+    if(votes[popularAnec] <= votes[topVotes]){
+      return
+    }
+
+    setTopVotes(popularAnec)
+  }, [votes, topVotes])
+
+  const handleRandom = () => {
+    let random = Math.floor(Math.random() * anecdotes.length)
+
+    if(random === selected){
+      random = Math.floor(Math.random() * anecdotes.length)
+    }
+    setSelected(random)
+    
+  }
 
   const handleVote = () => {
-    const arrNum = `${selected}`
-    console.log("arrNum", arrNum)
-    setVotes(prevState => ({
-      ...prevState,
-      [arrNum]:  votes[arrNum] + 1
-    }))
+    //create a copy 
+    let updatedVotes = [...votes]
+    updatedVotes[selected]++
+    setVotes(updatedVotes)
   }
+
 
   console.log('votes',votes)
   console.log('selected', selected)
@@ -45,6 +57,11 @@ const App = () => {
       <div>has {votes[`${selected}`]} votes </div>
       <button onClick={handleVote}>Vote</button>
       <button onClick={handleRandom}>next anecdote</button>
+      <div>
+        <h2>Most Voted Anecdotes</h2>
+        <p>{anecdotes[topVotes]}</p>
+        <p>This anecdote has the most votes at {votes[topVotes]}</p>
+      </div>
     </>
   )
 }
