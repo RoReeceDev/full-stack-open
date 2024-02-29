@@ -3,6 +3,7 @@ const Course = ({ course }) => {
     <>
     <Header course={course} />
     <Content course={course}/>
+    <Total course={course} />
     </>
   )
 }
@@ -32,14 +33,17 @@ const Content = ({ course }) => {
   )
 }
 
-// const Total = ({}) => {
-//   console.log('Total Props', props)
-//   const total = props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises
+const Total = ({ course }) => {
+  let parts = course.parts
+  let total = 0
+  for(let i = 0; i < parts.length; i++){
+    total += parts[i].exercises
+  }
 
-//   return (
-//     <p>Number of exercises {total}</p>
-//   )
-// }
+  return (
+    <p>total of {total} exercises</p>
+  )
+}
 
 
 
@@ -62,6 +66,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       },
     ]
   }
