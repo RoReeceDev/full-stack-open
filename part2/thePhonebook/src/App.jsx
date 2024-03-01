@@ -3,20 +3,29 @@ import { useState } from 'react'
 function App() {
   const [persons, setPersons] = useState([{
     name: 'Arto Hellas',
+    phone: '040-123456'
   }])
 
   const [newName, setNewName] = useState('')
+  
+  const [newPhone, setNewPhone] = useState('')
 
-  const handleChange = (e) => {
+  const handleNameChange = (e) => {
     console.log(e.target.value)
     setNewName(e.target.value)
   }
 
-  const addName = (e) => {
+  const handlePhoneChange = (e) => {
+    console.log(e.target.value)
+    setNewPhone(e.target.value)
+  }
+
+  const addContact = (e) => {
     e.preventDefault()
 
     const nameObj = {
       name: newName,
+      phone: newPhone,
     }
 
     const dulplicate = (n) => {
@@ -26,7 +35,6 @@ function App() {
         } 
       }
     }
-    console.log(dulplicate(nameObj))
 
     if(dulplicate(nameObj)){
       alert(`${nameObj.name} is already added to the phonebook`)
@@ -42,21 +50,26 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addContact}>
         <div>
           name: <input
             value={newName}
-            onChange={handleChange}
+            onChange={handleNameChange}
           />
         </div>
-        <div>debug: {newName}</div>
+        <div>
+        phone: <input
+          value={newPhone}
+          onChange={handlePhoneChange}
+          />
+        </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => <li key={person.name}>{person.name}</li>)}
+        {persons.map(person => <li key={person.name}>{person.name} {person.phone}</li>)}
       </ul>
     </>
   )
